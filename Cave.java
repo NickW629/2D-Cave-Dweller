@@ -7,6 +7,7 @@ package pkg2d.cave.dweller;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,23 +17,38 @@ import java.util.TimerTask;
  */
  public class Cave extends JPanel {
     private Timer timer;
-    private CaveMan player;
-    private Bomb bomb;
+    private Doge player;
+    private Snake snake;
+    private Background background;
+    private ArrayList<Bomb> bombs =new ArrayList<>();
 
     public Cave() {
         super();
-        player = new CaveMan(800, 600);
-        bomb = new Bomb(800, 600);
+        background=new Background(0,0);
+        snake=new Snake(800,600);
+        player = new Doge(800, 600);
         timer = new Timer();
         timer.scheduleAtFixedRate(new ScheduleTask(), 100, 1000/12);
+        for(int i=0; i<21; i++){
+        Bomb temp= new Bomb(1400,300);
+        bombs.add(temp);
+        }
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         this.setBackground(Color.GRAY);
-        if (bomb.isAlive()) bomb.draw(g);
+        background.draw(g);
         if (player.isAlive()) player.draw(g);
+        if (snake.isAlive()) snake.draw(g);
+          for(Bomb bomb : bombs){
+            if (bomb== null || !bomb.isAlive())
+                continue;
+                bomb.draw(g);
+        }
+
+        
 //        int counter = 0;
 //        while(counter < 20) {
 //            if (counter % 3 == 0) {
@@ -51,31 +67,50 @@ import java.util.TimerTask;
 
         @Override
         public void run() {
-            
-            bomb.update();
+            background.update();
             player.update();
+            snake.update();
+               for (Bomb bomb : bombs){
+                if (bomb== null || !bomb.isAlive())
+                    continue;
+                    bomb.update();
+                    BombVsPlayer(bomb);
+               }
             checkCollisions();
+            boundaries();
             repaint();
         }
     }
     
-    private void checkCollisions() {
-        if (player.getBounds().intersects(bomb.getBounds())) {
-            if (player.getVy() > 0) {
-                System.out.println("Bomb detonated");
+     private void BombVsPlayer(Bomb bomb){
+            if(bomb.isAlive() && bomb.getBounds().intersects(player.getBounds())){
+                player.takehit();
                 bomb.explode();
             }
-            else {
-                player.takehit();
-                //System.exit(0);
+     }
+    
+        public void boundaries() {
+            if(player.getX()<=0){
+                player.setX(0);
             }
-            System.out.println("collision!");
-        }
-        else {
-            
-        }
+                  if(player.getX()>=1400){
+                player.setX(1400);
+                  }
+                if (player.getY()<=0){
+                player.setY(0);
+                }
+                if (player.getY()>=800){
+                      player.setY(800);
+                  }
     }
 
+    private void checkCollisions() {
+      
+                //System.exit(0);
+            }
+  
+        
+    
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             player.move("right");
