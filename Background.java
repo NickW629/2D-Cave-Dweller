@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pkg2d.cave.dweller;
+package pkg2d.dog.cave.escape;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;

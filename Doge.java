@@ -1,7 +1,5 @@
-package pkg2d.cave.dweller;
-import java.awt.Color;
+package pkg2d.dog.cave.escape;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
@@ -22,6 +20,7 @@ public class Doge {
     private boolean alive;
     private ImageIcon ii;
     private Image img;
+
     
     //Constructor
     public Doge(int cWidth, int cHeight) {
@@ -38,6 +37,7 @@ public class Doge {
         this.bounds = new Rectangle(this.x, this.y, this.width, this.height);
         this.ii = new ImageIcon(getClass().getResource("banana.png"));
         this.img = ii.getImage();
+        this.ii = new ImageIcon(getClass().getResource("75 health.png"));
     }
 
     public int getX() {
@@ -73,11 +73,11 @@ public class Doge {
         this.alive = false;
     }
     public void takehit(){
-     hp-=10;
+     hp-=25;
      System.out.println("you lost health");
      System.out.print(hp);
      if (hp<=0)
-        System.exit(0);
+         System.exit(width);
   }
     
     public void move(String direction) {        
@@ -93,10 +93,6 @@ public class Doge {
     
     public void draw(Graphics g) {
         g.drawImage(img, x, y, width, height, null);
-       
-    }
-    
-    public void attack() {
         
     }
     

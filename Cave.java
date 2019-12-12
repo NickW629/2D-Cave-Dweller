@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pkg2d.cave.dweller;
-import java.awt.Color;
+package pkg2d.dog.cave.escape;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.TimerTask;
     private Timer timer;
     private Doge player;
     private Snake snake;
+    private Exit exit;
     private Background background;
     private ArrayList<Bomb> bombs =new ArrayList<>();
 
@@ -28,9 +28,10 @@ import java.util.TimerTask;
         snake=new Snake(800,600);
         player = new Doge(800, 600);
         timer = new Timer();
+        exit = new Exit(800,600);
         timer.scheduleAtFixedRate(new ScheduleTask(), 100, 1000/12);
-        for(int i=0; i<21; i++){
-        Bomb temp= new Bomb(1400,300);
+        for(int i=0; i<25; i++){
+        Bomb temp= new Bomb(1400,800);
         bombs.add(temp);
         }
     }
@@ -38,9 +39,16 @@ import java.util.TimerTask;
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.setBackground(Color.GRAY);
         background.draw(g);
-        if (player.isAlive()) player.draw(g);
+        exit.draw(g);
+        if (player.isAlive()){
+             player.draw(g);
+        }
+        
+            
+        
+             
+  
         if (snake.isAlive()) snake.draw(g);
           for(Bomb bomb : bombs){
             if (bomb== null || !bomb.isAlive())
@@ -70,6 +78,7 @@ import java.util.TimerTask;
             background.update();
             player.update();
             snake.update();
+            exit.update();
                for (Bomb bomb : bombs){
                 if (bomb== null || !bomb.isAlive())
                     continue;
@@ -86,6 +95,7 @@ import java.util.TimerTask;
             if(bomb.isAlive() && bomb.getBounds().intersects(player.getBounds())){
                 player.takehit();
                 bomb.explode();
+                
             }
      }
     
@@ -93,8 +103,8 @@ import java.util.TimerTask;
             if(player.getX()<=0){
                 player.setX(0);
             }
-                  if(player.getX()>=1400){
-                player.setX(1400);
+                  if(player.getX()>=1350){
+                player.setX(1350);
                   }
                 if (player.getY()<=0){
                 player.setY(0);
