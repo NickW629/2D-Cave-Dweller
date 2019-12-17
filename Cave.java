@@ -17,22 +17,26 @@ import java.util.TimerTask;
  public class Cave extends JPanel {
     private Timer timer;
     private Doge player;
-    private Snake snake;
     private Exit exit;
     private Background background;
     private ArrayList<Bomb> bombs =new ArrayList<>();
+    private ArrayList<Snake> snakes =new ArrayList<>();
 
     public Cave() {
         super();
+   
         background=new Background(0,0);
-        snake=new Snake(800,600);
         player = new Doge(800, 600);
         timer = new Timer();
         exit = new Exit(800,600);
         timer.scheduleAtFixedRate(new ScheduleTask(), 100, 1000/12);
         for(int i=0; i<25; i++){
-        Bomb temp= new Bomb(1400,800);
+        Bomb temp= new Bomb(1200,800);
         bombs.add(temp);
+        }
+        for(int i=0; i<5; i++){
+        Snake temp= new Snake(1200,800);
+        snakes.add(temp);
         }
     }
 
@@ -44,40 +48,29 @@ import java.util.TimerTask;
         if (player.isAlive()){
              player.draw(g);
         }
-        
-            
-        
-             
-  
-        if (snake.isAlive()) snake.draw(g);
+             for(Snake snake : snakes){
+            if (snake== null || !snake.isAlive())
+                continue;
+                snake.draw(g);
+        }
           for(Bomb bomb : bombs){
             if (bomb== null || !bomb.isAlive())
                 continue;
                 bomb.draw(g);
-        }
-
-        
-//        int counter = 0;
-//        while(counter < 20) {
-//            if (counter % 3 == 0) {
-//                g.setColor(Color.RED);
-//            }
-//            else {
-//                g.setColor(Color.GREEN);
-//            }
-//            
-//            g.fillRect(30*counter,30*counter,25,25);
-//            counter++;
-//        }
+          }
     }
-
     private class ScheduleTask extends TimerTask {
 
         @Override
         public void run() {
             background.update();
             player.update();
-            snake.update();
+            for (Snake snake : snakes){
+                if (snake== null || !snake.isAlive())
+                    continue;
+                    snake.update();
+                    SnakeVsPlayer(snake);
+               }
             exit.update();
                for (Bomb bomb : bombs){
                 if (bomb== null || !bomb.isAlive())
@@ -90,12 +83,16 @@ import java.util.TimerTask;
             repaint();
         }
     }
-    
+       private void SnakeVsPlayer(Snake snake){
+            if(snake.isAlive() && snake.getBounds().intersects(player.getBounds())){
+                player.takehit();
+                snake.die();
+            }
+       }
      private void BombVsPlayer(Bomb bomb){
             if(bomb.isAlive() && bomb.getBounds().intersects(player.getBounds())){
                 player.takehit();
                 bomb.explode();
-                
             }
      }
     
@@ -112,14 +109,38 @@ import java.util.TimerTask;
                 if (player.getY()>=800){
                       player.setY(800);
                   }
+                
+              for(Snake snake:snakes){ 
+                  if(snake.getX()<=0){
+                snake.setVx(4);
+            }
+                  if(snake.getX()>=1350)
+                      snake.setVx(-4);
+           }
+                
     }
 
     private void checkCollisions() {
-      
-                //System.exit(0);
+        if(player.isAlive() && exit.getBounds().intersects(player.getBounds())){
+           System.out.println("You Win");
+           restart(1600,900);
             }
-  
-        
+         }
+    private void restart (int cWidth,int cHeight){
+       if(player.isAlive() && exit.getBounds().intersects(player.getBounds())){
+        player.setX(1400);
+        player.setHp(100);
+        for(int i=0; i<15; i++){
+        Bomb temp= new Bomb(1200,800);
+        bombs.add(temp);
+        }
+         for(int i=0; i<2; i++){
+        Snake temp= new Snake(1200,800);
+        snakes.add(temp);
+        }
+        }
+    }
+   
     
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {

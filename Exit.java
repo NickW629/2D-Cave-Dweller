@@ -25,7 +25,7 @@ public class Exit {
       this.y = (int) (Math.random()*cHeight);
       this.width=100;
       this.height=100;
-      this.bounds=new Rectangle(this.x,this.y,this.width,this.height);
+      this.bounds=new Rectangle(this.x,this.y,this.width/3,this.height);
       this.ii = new ImageIcon(getClass().getResource("Door.png"));
       this.img = ii.getImage();
      }

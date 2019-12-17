@@ -5,7 +5,6 @@
  */
 package pkg2d.dog.cave.escape;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
@@ -14,7 +13,7 @@ import javax.swing.ImageIcon;
  * @author 629387
  */
 public class Background {
-     private int height, width, x, y ;
+    private int height, width, x, y ;
     private Rectangle bounds;
     private ImageIcon ii;
     private Image img;

@@ -14,30 +14,41 @@ import javax.swing.ImageIcon;
  * @author 629387
  */
 public class Doge {
-    private int height, width, x, y, vx, vy, hp, xp, score;
+    private int height, width, x, y, vx, vy, hp, score;
     private Rectangle bounds;
     private final int SPEED = 7;
     private boolean alive;
     private ImageIcon ii;
     private Image img;
+    private Image img2;
+    private Image img3;
+    private Image img4;
+    private Image img5;
 
     
     //Constructor
     public Doge(int cWidth, int cHeight) {
         this.alive = true;
-        this.x = cWidth / 2;
-        this.y = cHeight / 2;
+        this.x = 1400;
+        this.y = 600;
         this.vx = 0;
         this.vy = 0;
         this.width = 125;
         this.height = 100;
         this.hp = 100;
-        this.xp = 0;
         this.score = 0;
         this.bounds = new Rectangle(this.x, this.y, this.width, this.height);
         this.ii = new ImageIcon(getClass().getResource("banana.png"));
         this.img = ii.getImage();
         this.ii = new ImageIcon(getClass().getResource("75 health.png"));
+        this.img2 = ii.getImage();
+        this.ii = new ImageIcon(getClass().getResource("50 health.png"));
+        this.img3 = ii.getImage();
+        this.ii = new ImageIcon(getClass().getResource("25 health.png"));
+        this.img4 = ii.getImage();
+        this.ii = new ImageIcon(getClass().getResource("0 health.png"));
+        this.img5 = ii.getImage();
+        
     }
 
     public int getX() {
@@ -67,6 +78,14 @@ public class Doge {
     public Rectangle getBounds() {
         return bounds;
     }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
     
     //Methods
     public void die() {
@@ -76,9 +95,10 @@ public class Doge {
      hp-=25;
      System.out.println("you lost health");
      System.out.print(hp);
-     if (hp<=0)
-         System.exit(width);
-  }
+     if (hp<=0){
+         System.exit(0);
+             }
+   }
     
     public void move(String direction) {        
         if (direction.equals("right"))
@@ -92,8 +112,21 @@ public class Doge {
     }
     
     public void draw(Graphics g) {
+        if (hp<=0){
+         g.drawImage(img5, x, y, width, height, null);
+        }
+        else if(hp<=25){
+        g.drawImage(img4, x, y, width, height, null);
+        }
+        else if(hp<=50){
+        g.drawImage(img3, x, y, width, height, null);
+        }
+        else if (hp<=75){
+        g.drawImage(img2, x, y, width, height, null);
+        }
+        else{
         g.drawImage(img, x, y, width, height, null);
-        
+        }
     }
     
     public void collect() {

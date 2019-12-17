@@ -27,7 +27,7 @@ public class Bomb {
       this.y = (int) (Math.random()*cHeight);
       this.width=20;
       this.height=20;
-      this.bounds=new Rectangle(this.x,this.y,this.width,this.height);
+      this.bounds=new Rectangle(this.x,this.y,this.width/2,this.height/2);
       this.ii = new ImageIcon(getClass().getResource("Bomb.png"));
       this.img = ii.getImage();
   }
